@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.glaizier</groupId>
-    <artifactId>key-value-cache</artifactId>
+    <artifactId>key-element-cache</artifactId>
     <version>0.1</version>
 
     <properties>
@@ -37,5 +37,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

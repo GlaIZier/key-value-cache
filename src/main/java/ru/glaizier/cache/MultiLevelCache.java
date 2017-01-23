@@ -3,6 +3,7 @@ package ru.glaizier.cache;
 import ru.glaizier.storage.KeyValueStorage;
 
 import java.util.List;
+import java.util.Map;
 
 public class MultiLevelCache<K, V> implements Cache<K, V> {
 
@@ -33,7 +34,7 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public V removeCandidate(K key) {
+    public Map.Entry<K, V> removeCandidate() {
         return null;
     }
 
