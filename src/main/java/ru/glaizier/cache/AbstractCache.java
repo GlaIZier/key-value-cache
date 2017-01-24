@@ -56,7 +56,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     }
 
     protected V abstractStoragePut(K key, V value) {
-        if (getSize() == getMaxSize())
+        if (!contains(key) && getSize() == getMaxSize())
             evict();
         return storage.put(key, value);
     }
