@@ -19,13 +19,18 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public void put(K key, V value) {
-
+    public V put(K key, V value) {
+        return null;
     }
 
     @Override
-    public V delete(K key) {
+    public V remove(K key) {
         return null;
+    }
+
+    @Override
+    public boolean contains(K key) {
+        return false;
     }
 
     @Override

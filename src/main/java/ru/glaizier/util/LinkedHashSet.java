@@ -34,6 +34,10 @@ public class LinkedHashSet<E> {
 
     public LinkedHashSet() {}
 
+    /**
+     * @return true if this set did not already contain the specified
+     * element
+     */
     public boolean add(E e) {
         if (contains(e))
             return false;
@@ -72,6 +76,9 @@ public class LinkedHashSet<E> {
         return map.containsKey(e);
     }
 
+    /**
+     * @return true if the set contained the specified element
+     */
     public boolean remove(E e) {
         if (!contains(e))
             return false;
