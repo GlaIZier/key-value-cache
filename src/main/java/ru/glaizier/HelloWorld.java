@@ -16,6 +16,7 @@ public class HelloWorld {
                 .mapToInt(String::length)
                 .sum());
 
+        System.out.println(Stream.of(false, false, false).anyMatch(b -> b));
 
         System.out.println("Hello world!");
     }

@@ -11,7 +11,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     protected final KeyValueStorage<K, V> storage;
 
-    protected final LinkedHashSet<K> removeCandidatesQueue = new LinkedHashSet<>();
+    protected final LinkedHashSet<K> evictQueue = new LinkedHashSet<>();
 
     private final int maxSize;
 
@@ -25,15 +25,15 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     @Override
     public V remove(K key) {
-        removeCandidatesQueue.remove(key);
+        evictQueue.remove(key);
         return storage.remove(key);
     }
 
     @Override
-    public Map.Entry<K, V> removeCandidate() {
-        K key = removeCandidatesQueue.getHead();
+    public Map.Entry<K, V> evict() {
+        K key = evictQueue.getHead();
         // if we get null we need to check if we don't have such key in queue or a key == null
-        if (!removeCandidatesQueue.contains(key))
+        if (!evictQueue.contains(key))
             // queue is empty. Don't need to do anything
             return null;
         V value = remove(key);
@@ -42,7 +42,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     @Override
     public boolean contains(K key) {
-        return removeCandidatesQueue.contains(key);
+        return evictQueue.contains(key);
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     protected V abstractStoragePut(K key, V value) {
         if (getSize() == getMaxSize())
-            removeCandidate();
+            evict();
         return storage.put(key, value);
     }
 

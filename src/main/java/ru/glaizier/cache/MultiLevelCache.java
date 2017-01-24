@@ -9,13 +9,21 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
 
     private final List<Cache<K, V>> levels;
 
+    // TODO think about transfer from levels algorithm
     public MultiLevelCache(List<Cache<K, V>> levels) {
+        assert levels != null;
+        assert !levels.isEmpty();
+
         this.levels = levels;
     }
 
     @Override
     public V get(K key) {
-        return null;
+        if (!contains(key))
+            return null;
+        return levels.stream().filter(c -> contains(key)).findFirst().
+                orElseThrow(() -> new IllegalStateException("Multilevel cache contains value but couldn't get one!"))
+                .get(key);
     }
 
     @Override
@@ -30,7 +38,7 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
 
     @Override
     public boolean contains(K key) {
-        return false;
+        return levels.stream().anyMatch(c -> c.contains(key));
     }
 
     @Override
@@ -39,7 +47,7 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public Map.Entry<K, V> removeCandidate() {
+    public Map.Entry<K, V> evict() {
         return null;
     }
 

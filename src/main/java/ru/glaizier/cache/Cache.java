@@ -6,12 +6,15 @@ import java.util.Map;
 
 public interface Cache<K, V> extends KeyValueStorage<K, V> {
 
+    // TODO implement this method for multilevel cache
+//    Map.Entry<K, V> putAndGetEvicted(K key, V value);
+
     /**
      * Removes first candidate to remove from cache
      *
-     * @return
+     * @return key-value of removed candidate
      */
-    Map.Entry<K, V> removeCandidate();
+    Map.Entry<K, V> evict();
 
     int getMaxSize();
 

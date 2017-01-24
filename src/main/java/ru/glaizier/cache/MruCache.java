@@ -13,16 +13,16 @@ public class MruCache<K, V> extends AbstractCache<K, V> {
     public V get(K key) {
         if (!contains(key))
             return null;
-        removeCandidatesQueue.remove(key);
-        removeCandidatesQueue.addToHead(key);
+        evictQueue.remove(key);
+        evictQueue.addToHead(key);
         return storage.get(key);
     }
 
     @Override
     public V put(K key, V value) {
         V oldValue = abstractStoragePut(key, value);
-        removeCandidatesQueue.remove(key);
-        removeCandidatesQueue.addToHead(key);
+        evictQueue.remove(key);
+        evictQueue.addToHead(key);
         return oldValue;
     }
 }
