@@ -11,7 +11,7 @@ public interface KeyValueStorage<K, V> {
 
     /**
      * @return previous value or null if there was no such value. Or return null when no such key.
-     * Use contains to handle this situation
+     * Use contains() to handle this situation
      */
     V remove(K key);
 

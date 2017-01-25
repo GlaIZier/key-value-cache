@@ -86,12 +86,12 @@ public class AbstractCacheTest extends Assert {
     }
 
     @Test
-    public void getMaxSize() throws Exception {
-        assertEquals(3, c.getMaxSize());
+    public void getCapacity() throws Exception {
+        assertEquals(3, c.getCapacity());
         c.put(4, "4");
-        assertEquals(3, c.getMaxSize());
+        assertEquals(3, c.getCapacity());
         c.evict();
-        assertEquals(3, c.getMaxSize());
+        assertEquals(3, c.getCapacity());
     }
 
 }

@@ -12,14 +12,14 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     protected final LinkedHashSet<K> evictQueue = new LinkedHashSet<>();
 
-    private final int maxSize;
+    private final int capacity;
 
-    AbstractCache(KeyValueStorage<K, V> storage, int maxSize) {
-        assert maxSize > 0;
+    AbstractCache(KeyValueStorage<K, V> storage, int capacity) {
+        assert capacity > 0;
         assert storage != null;
 
         this.storage = storage;
-        this.maxSize = maxSize;
+        this.capacity = capacity;
     }
 
     @Override
@@ -50,19 +50,19 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public int getMaxSize() {
-        return maxSize;
+    public int getCapacity() {
+        return capacity;
     }
 
     protected V abstractPut(K key, V value) {
-        if (!contains(key) && getSize() == getMaxSize())
+        if (!contains(key) && getSize() == getCapacity())
             evict();
         return storage.put(key, value);
     }
 
     protected Map.Entry<K, V> abstractPutAndGetEvicted(K key, V value) {
         Map.Entry<K, V> evicted = null;
-        if (!contains(key) && getSize() == getMaxSize())
+        if (!contains(key) && getSize() == getCapacity())
             evicted = evict();
         storage.put(key, value);
         return evicted;

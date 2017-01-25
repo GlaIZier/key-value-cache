@@ -15,6 +15,6 @@ public interface Cache<K, V> extends KeyValueStorage<K, V> {
      */
     Map.Entry<K, V> evict();
 
-    int getMaxSize();
+    int getCapacity();
 
 }

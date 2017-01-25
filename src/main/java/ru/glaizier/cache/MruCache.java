@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class MruCache<K, V> extends AbstractCache<K, V> {
 
-    public MruCache(KeyValueStorage<K, V> storage, int maxSize) {
-        super(storage, maxSize);
+    public MruCache(KeyValueStorage<K, V> storage, int capacity) {
+        super(storage, capacity);
     }
 
 

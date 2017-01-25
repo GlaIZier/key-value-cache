@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class LruCache<K, V> extends AbstractCache<K, V> {
 
-    public LruCache(KeyValueStorage<K, V> storage, int maxSize) {
-        super(storage, maxSize);
+    public LruCache(KeyValueStorage<K, V> storage, int capacity) {
+        super(storage, capacity);
     }
 
     @Override
