@@ -6,7 +6,6 @@ import ru.glaizier.util.LinkedHashSet;
 import java.util.AbstractMap;
 import java.util.Map;
 
-// TODO write tests for this
 public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     protected final KeyValueStorage<K, V> storage;
@@ -55,10 +54,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         return maxSize;
     }
 
-    protected V abstractStoragePut(K key, V value) {
+    protected V abstractPut(K key, V value) {
         if (!contains(key) && getSize() == getMaxSize())
             evict();
         return storage.put(key, value);
+    }
+
+    protected Map.Entry<K, V> abstractPutAndGetEvicted(K key, V value) {
+        Map.Entry<K, V> evicted = null;
+        if (!contains(key) && getSize() == getMaxSize())
+            evicted = evict();
+        storage.put(key, value);
+        return evicted;
     }
 
 }

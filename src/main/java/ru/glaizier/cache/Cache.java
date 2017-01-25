@@ -6,8 +6,7 @@ import java.util.Map;
 
 public interface Cache<K, V> extends KeyValueStorage<K, V> {
 
-    // TODO implement this method for multilevel cache
-//    Map.Entry<K, V> putAndGetEvicted(K key, V value);
+    Map.Entry<K, V> putAndGetEvicted(K key, V value);
 
     /**
      * Removes first candidate to remove from cache

@@ -47,6 +47,11 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    public Map.Entry<K, V> putAndGetEvicted(K key, V value) {
+        return null;
+    }
+
+    @Override
     public Map.Entry<K, V> evict() {
         return null;
     }
