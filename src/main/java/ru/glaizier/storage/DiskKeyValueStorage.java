@@ -1,5 +1,7 @@
 package ru.glaizier.storage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
     private final Map<K, String> keyToFilePath = new HashMap<>();
+
+    ObjectMapper mapper = new ObjectMapper();
 
     private final String basePath;
 
