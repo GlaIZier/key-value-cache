@@ -2,6 +2,10 @@ package ru.glaizier.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +26,14 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     private int lastFileIndex = 1;
 
     public DiskKeyValueStorage(String basePath) {
+        if (basePath.charAt(basePath.length() - 1) != File.separatorChar)
+            basePath += File.separator;
         this.basePath = basePath;
+        try {
+            Files.createDirectories(Paths.get(this.basePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -40,6 +51,18 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     public V put(K key, V value) {
         V result = get(key);
         Map.Entry<K, V> entry = new AbstractMap.SimpleEntry<>(key, value);
+        String fileName = basePath + lastFileIndex++;
+        File file = new File(fileName);
+        // TODO always recreate a file
+        try {
+
+            file.createNewFile();
+//            Files.createFile(Paths.get(fileName));
+            System.out.println(mapper.writeValueAsString(entry));
+            mapper.writeValue(file, entry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // create filename
         // serialization
         // save
