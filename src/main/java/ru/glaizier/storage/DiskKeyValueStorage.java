@@ -10,11 +10,6 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * serialize to json
- * store in file serialized Map.Entry<K, V>
- */
-
 public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
     private final Map<K, String> keyToFilePath = new HashMap<>();
