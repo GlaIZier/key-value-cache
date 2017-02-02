@@ -1,6 +1,8 @@
 package ru.glaizier.storage;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -16,22 +18,31 @@ public class DiskKeyValueStorageTest extends Assert {
     private KeyValueStorage<Set<Integer>, List<String>> storage =
             new DiskKeyValueStorage<>(BASE_PATH);
 
-    private KeyValueStorage<Object, Object> storage1 = new DiskKeyValueStorage<>(BASE_PATH);
+    private KeyValueStorage<Integer, String> storage1 = new DiskKeyValueStorage<>(BASE_PATH);
 
-    @Test
-    public void get() throws Exception {
-
+    @Before
+    public void init() {
+        storage1.put(1, "1");
     }
 
     @Test
+    @Ignore
+    public void get() throws Exception {
+        storage1.get(1);
+    }
+
+    @Test
+    @Ignore
     public void put() throws Exception {
+        storage1.put(1, "1");
+
         Set<Integer> s = new HashSet<>();
         s.add(1);
         s.add(2);
         List<String> l = new ArrayList<>();
         l.add("1");
         l.add("2");
-        storage.put(s, l);
+//        storage.put(s, l);
     }
 
     @Test

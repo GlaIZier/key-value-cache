@@ -1,5 +1,6 @@
 package ru.glaizier.storage;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -36,7 +37,17 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
         if (!contains(key))
             return null;
 
-        String path = keyToFilePath.get(key);
+        String filePath = keyToFilePath.get(key);
+        File file = new File(filePath);
+        AbstractMap.SimpleEntry<K, V> entry = null;
+//        try {
+//            entry = mapper.readValue(file, AbstractMap.SimpleEntry());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        System.out.println(entry.getKey());
+        System.out.println(entry.getValue());
         // deserialization
         // return Map.Entry implementation
         return null;
@@ -44,23 +55,21 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
     @Override
     public V put(K key, V value) {
-        V result = get(key);
-        Map.Entry<K, V> entry = new AbstractMap.SimpleEntry<>(key, value);
-        String fileName = basePath + lastFileIndex++;
-        File file = new File(fileName);
-        // TODO always recreate a file
-        try {
+        V result = remove(key);
 
+
+        Map.Entry<K, V> entry = new AbstractMap.SimpleEntry<>(key, value);
+        String filePath = basePath + lastFileIndex++;
+        File file = new File(filePath);
+        try {
             file.createNewFile();
-//            Files.createFile(Paths.get(fileName));
+//            Files.createFile(Paths.get(filePath));
             System.out.println(mapper.writeValueAsString(entry));
             mapper.writeValue(file, entry);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // create filename
-        // serialization
-        // save
+        keyToFilePath.put(key, filePath);
         return result;
     }
 
@@ -69,8 +78,9 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
         if (!contains(key))
             return null;
         V result = get(key);
-        String path = keyToFilePath.remove(key);
-        // file remove
+        String filePath = keyToFilePath.remove(key);
+        File file = new File(filePath);
+        file.delete();
         return result;
     }
 
