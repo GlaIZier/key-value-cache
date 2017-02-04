@@ -22,7 +22,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ru.glaizier.HelloWorld</mainClass>
+                            <mainClass>ru.glaizier.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
