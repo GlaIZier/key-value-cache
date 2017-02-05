@@ -1,13 +1,13 @@
 package ru.glaizier.storage;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,16 +15,26 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
     private final Map<K, String> keyToFilePath = new HashMap<>();
 
-    ObjectMapper mapper = new ObjectMapper();
-
-    private final String basePath;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private int lastFileIndex = 1;
 
-    public DiskKeyValueStorage(String basePath) {
+    private final String basePath;
+
+    private final Class<K> keyType;
+
+    private final Class<V> valueType;
+
+    // TODO check all warning
+    // TODO think about exceptions
+    // TODO remove all files in folder if exists
+    // TODO think what is going on if complex data types are stored
+    public DiskKeyValueStorage(String basePath, Class<K> keyType, Class<V> valueType) {
         if (basePath.charAt(basePath.length() - 1) != File.separatorChar)
             basePath += File.separator;
         this.basePath = basePath;
+        this.keyType = keyType;
+        this.valueType = valueType;
         try {
             Files.createDirectories(Paths.get(this.basePath));
         } catch (IOException e) {
@@ -39,17 +49,14 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
         String filePath = keyToFilePath.get(key);
         File file = new File(filePath);
-        AbstractMap.SimpleEntry<K, V> entry = null;
-//        try {
-//            entry = mapper.readValue(file, AbstractMap.SimpleEntry());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        System.out.println(entry.getKey());
-        System.out.println(entry.getValue());
-        // deserialization
-        // return Map.Entry implementation
+//        Pair<K, V> entry = null;
+        try {
+//            entry = mapper.readValue(file, new TypeReference<Pair<K, V>>(){});
+            Pair<K, V> entry = mapper.readValue(file, mapper.getTypeFactory().constructParametricType(Pair.class, keyType, valueType));
+            return entry.getValue();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -57,14 +64,12 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     public V put(K key, V value) {
         V result = remove(key);
 
-
-        Map.Entry<K, V> entry = new AbstractMap.SimpleEntry<>(key, value);
+        Pair<K, V> entry = new Pair<>(key, value);
         String filePath = basePath + lastFileIndex++;
         File file = new File(filePath);
         try {
             file.createNewFile();
 //            Files.createFile(Paths.get(filePath));
-            System.out.println(mapper.writeValueAsString(entry));
             mapper.writeValue(file, entry);
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,4 +98,34 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     public int getSize() {
         return keyToFilePath.size();
     }
+
+    private static class Pair<K, V> {
+
+        private K key;
+
+        private V value;
+
+        @JsonCreator
+        private Pair(@JsonProperty("key") K key, @JsonProperty("value") V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+    }
+
 }

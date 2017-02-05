@@ -2,62 +2,117 @@ package ru.glaizier.storage;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 public class DiskKeyValueStorageTest extends Assert {
 
     private static final String BASE_PATH = "/tmp/key-value-storage/";
+//
+//    private KeyValueStorage<Set<Integer>, List<String>> storage =
+//            new DiskKeyValueStorage<>(BASE_PATH, Set.class, List.class);
 
-    private KeyValueStorage<Set<Integer>, List<String>> storage =
-            new DiskKeyValueStorage<>(BASE_PATH);
-
-    private KeyValueStorage<Integer, String> storage1 = new DiskKeyValueStorage<>(BASE_PATH);
+    private KeyValueStorage<Integer, String> s1 = new DiskKeyValueStorage<>(BASE_PATH, Integer.class, String.class);
 
     @Before
     public void init() {
-        storage1.put(1, "1");
+        s1.put(1, "1");
+        s1.put(2, "2");
+        s1.put(3, "three");
+        s1.put(null, "4");
+        s1.put(5, null);
+        s1.put(6, "null");
     }
 
     @Test
-    @Ignore
     public void get() throws Exception {
-        storage1.get(1);
+        assertEquals("1", s1.get(1));
+        assertEquals("2", s1.get(2));
+        assertEquals("three", s1.get(3));
+        assertEquals("4", s1.get(null));
+        assertEquals(null, s1.get(5));
+        assertEquals("null", s1.get(6));
     }
 
     @Test
-    @Ignore
     public void put() throws Exception {
-        storage1.put(1, "1");
+        assertEquals(null, s1.put(7, "7"));
+        assertEquals(null, s1.put(8, "8"));
 
-        Set<Integer> s = new HashSet<>();
-        s.add(1);
-        s.add(2);
-        List<String> l = new ArrayList<>();
-        l.add("1");
-        l.add("2");
+        assertEquals("1", s1.put(1, "one"));
+        assertEquals("three", s1.put(3, "3"));
+        assertEquals("4", s1.put(null, "four"));
+        assertEquals(null, s1.put(5, "5"));
+        assertEquals("null", s1.put(6, "6"));
+
+        assertTrue(s1.contains(1));
+        assertTrue(s1.contains(2));
+        assertTrue(s1.contains(3));
+        assertTrue(s1.contains(null));
+        assertTrue(s1.contains(5));
+        assertTrue(s1.contains(6));
+        assertTrue(s1.contains(7));
+        assertTrue(s1.contains(8));
+
+//        Set<Integer> s = new HashSet<>();
+//        s.add(1);
+//        s.add(2);
+//        List<String> l = new ArrayList<>();
+//        l.add("1");
+//        l.add("2");
 //        storage.put(s, l);
     }
 
     @Test
     public void remove() throws Exception {
+        assertEquals("1", s1.remove(1));
+        assertEquals("2", s1.remove(2));
+        assertEquals("three", s1.remove(3));
+        assertEquals("4", s1.remove(null));
+        assertEquals(null, s1.remove(5));
+        assertEquals("null", s1.remove(6));
 
+        assertFalse(s1.contains(1));
+        assertFalse(s1.contains(2));
+        assertFalse(s1.contains(3));
+        assertFalse(s1.contains(null));
+        assertFalse(s1.contains(5));
+        assertFalse(s1.contains(6));
+
+        assertEquals(null, s1.remove(1));
+        assertEquals(null, s1.remove(2));
+        assertEquals(null, s1.remove(3));
+        assertEquals(null, s1.remove(null));
+        assertEquals(null, s1.remove(5));
+        assertEquals(null, s1.remove(6));
     }
 
     @Test
     public void contains() throws Exception {
+        assertTrue(s1.contains(1));
+        assertTrue(s1.contains(2));
+        assertTrue(s1.contains(3));
+        assertTrue(s1.contains(null));
+        assertTrue(s1.contains(5));
+        assertTrue(s1.contains(6));
 
+        assertFalse(s1.contains(7));
+
+        s1.remove(1);
+        assertFalse(s1.contains(1));
+        s1.put(1, "one");
+        assertTrue(s1.contains(1));
     }
 
     @Test
     public void getSize() throws Exception {
-
+        assertEquals(6, s1.getSize());
+        s1.remove(1);
+        assertEquals(5, s1.getSize());
+        s1.remove(1);
+        assertEquals(5, s1.getSize());
+        s1.put(1, "oooone");
+        assertEquals(6, s1.getSize());
     }
 
 }
