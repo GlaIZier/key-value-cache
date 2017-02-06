@@ -32,7 +32,7 @@ public class Main {
         boolean isLru = true;
         int c1 = 3;
         int c2 = 5;
-        String d = "/tmp/key-value-cache/";
+        String d = "./key-value-cache/";
 
         String sValue = line.getOptionValue("s");
         if ("mru".equals(sValue))
@@ -47,7 +47,7 @@ public class Main {
             c2 = Integer.parseInt(c2Value);
 
         String dValue = line.getOptionValue("d");
-        if (dValue != null && "".equals(dValue))
+        if (dValue != null && !"".equals(dValue))
             d = dValue;
 
         testCache(isLru, c1, c2, d);

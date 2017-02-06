@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DiskKeyValueStorageTest extends Assert {
 
     //TODO base path for test conditional to OS
-    private static final String BASE_PATH = "/tmp/key-value-cache/";
+    private static final String BASE_PATH = "./key-value-cache/";
 
     private KeyValueStorage<Integer, String> s1 = new DiskKeyValueStorage<>(BASE_PATH, Integer.class, String.class);
 
