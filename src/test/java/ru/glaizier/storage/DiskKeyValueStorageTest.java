@@ -7,10 +7,8 @@ import org.junit.Test;
 
 public class DiskKeyValueStorageTest extends Assert {
 
-    private static final String BASE_PATH = "/tmp/key-value-storage/";
-//
-//    private KeyValueStorage<Set<Integer>, List<String>> storage =
-//            new DiskKeyValueStorage<>(BASE_PATH, Set.class, List.class);
+    //TODO base path for test conditional to OS
+    private static final String BASE_PATH = "/tmp/key-value-cache/";
 
     private KeyValueStorage<Integer, String> s1 = new DiskKeyValueStorage<>(BASE_PATH, Integer.class, String.class);
 
@@ -53,14 +51,6 @@ public class DiskKeyValueStorageTest extends Assert {
         assertTrue(s1.contains(6));
         assertTrue(s1.contains(7));
         assertTrue(s1.contains(8));
-
-//        Set<Integer> s = new HashSet<>();
-//        s.add(1);
-//        s.add(2);
-//        List<String> l = new ArrayList<>();
-//        l.add("1");
-//        l.add("2");
-//        storage.put(s, l);
     }
 
     @Test

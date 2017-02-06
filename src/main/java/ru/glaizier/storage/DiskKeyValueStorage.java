@@ -30,6 +30,11 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     // TODO remove all files in folder if exists
     // TODO think what is going on if complex data types are stored
     public DiskKeyValueStorage(String basePath, Class<K> keyType, Class<V> valueType) {
+        assert basePath != null;
+        assert !"".equals(basePath);
+        assert keyType != null;
+        assert valueType != null;
+
         if (basePath.charAt(basePath.length() - 1) != File.separatorChar)
             basePath += File.separator;
         this.basePath = basePath;
@@ -49,10 +54,9 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
         String filePath = keyToFilePath.get(key);
         File file = new File(filePath);
-//        Pair<K, V> entry = null;
         try {
-//            entry = mapper.readValue(file, new TypeReference<Pair<K, V>>(){});
-            Pair<K, V> entry = mapper.readValue(file, mapper.getTypeFactory().constructParametricType(Pair.class, keyType, valueType));
+            Pair<K, V> entry = mapper.readValue(file, mapper.getTypeFactory().constructParametricType(Pair.class,
+                    keyType, valueType));
             return entry.getValue();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +73,6 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
         File file = new File(filePath);
         try {
             file.createNewFile();
-//            Files.createFile(Paths.get(filePath));
             mapper.writeValue(file, entry);
         } catch (IOException e) {
             e.printStackTrace();
