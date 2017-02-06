@@ -11,8 +11,9 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     private final List<Cache<K, V>> levels;
 
     public MultiLevelCache(List<Cache<K, V>> levels) {
-        assert levels != null;
-        assert !levels.isEmpty();
+        if (levels == null || levels.isEmpty())
+            throw new IllegalArgumentException("Illegal argument in MultiLevelCache constructor! " +
+                    "levels must be not empty");
 
         this.levels = levels;
     }

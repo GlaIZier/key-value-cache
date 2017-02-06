@@ -15,8 +15,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private final int capacity;
 
     AbstractCache(KeyValueStorage<K, V> storage, int capacity) {
-        assert capacity > 0;
-        assert storage != null;
+        if (capacity <= 0 || storage == null)
+            throw new IllegalArgumentException("Illegal argument in AbstractCache constructor! " +
+                    "Capacity must be positive int, storage not null");
 
         this.storage = storage;
         this.capacity = capacity;

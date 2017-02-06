@@ -26,10 +26,9 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     private final Class<V> valueType;
 
     public DiskKeyValueStorage(String basePath, Class<K> keyType, Class<V> valueType) {
-        assert basePath != null;
-        assert !"".equals(basePath);
-        assert keyType != null;
-        assert valueType != null;
+        if (basePath == null || "".equals(basePath) || keyType == null || valueType == null)
+            throw new IllegalArgumentException("Illegal argument in DiskKeyValueStorage constructor! " +
+                    "basePath must be not empty, keyType not null, valueType not null");
 
         if (basePath.charAt(basePath.length() - 1) != File.separatorChar)
             basePath += File.separator;
