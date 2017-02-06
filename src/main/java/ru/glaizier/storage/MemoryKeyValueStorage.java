@@ -31,4 +31,5 @@ public class MemoryKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
     public int getSize() {
         return map.size();
     }
+
 }

@@ -25,11 +25,6 @@ public class DiskKeyValueStorage<K, V> implements KeyValueStorage<K, V> {
 
     private final Class<V> valueType;
 
-    // TODO check all warnings
-    // TODO think about exceptions
-    // TODO remove all files in folder if exists
-    // TODO clean up folder after app usage?
-    // TODO think what is going on if complex data types are stored
     public DiskKeyValueStorage(String basePath, Class<K> keyType, Class<V> valueType) {
         assert basePath != null;
         assert !"".equals(basePath);

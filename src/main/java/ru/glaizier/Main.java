@@ -11,8 +11,12 @@ import ru.glaizier.storage.MemoryKeyValueStorage;
 import java.util.Arrays;
 import java.util.Map;
 
-// TODO move all todos to issues on github
 public class Main {
+
+    private static final boolean DEFAULT_IS_LRU = true;
+    private static final int DEFAULT_C1 = 3;
+    private static final int DEFAULT_C2 = 5;
+    private static final String DEFAULT_DIRECTORY = "./key-value-cache/";
 
     public static void main(String[] args) {
         Options options = createOptions();
@@ -29,10 +33,10 @@ public class Main {
         if (line == null)
             throw new IllegalStateException("Parser returned null value!");
 
-        boolean isLru = true;
-        int c1 = 3;
-        int c2 = 5;
-        String d = "./key-value-cache/";
+        boolean isLru = DEFAULT_IS_LRU;
+        int c1 = DEFAULT_C1;
+        int c2 = DEFAULT_C2;
+        String d = DEFAULT_DIRECTORY;
 
         String sValue = line.getOptionValue("s");
         if ("mru".equals(sValue))
@@ -53,9 +57,6 @@ public class Main {
         testCache(isLru, c1, c2, d);
     }
 
-    // -s: strategy
-    // -c: capacity
-    // -d: directory
     private static Options createOptions() {
         Options options = new Options();
 
@@ -116,14 +117,5 @@ public class Main {
             System.out.println(String.format("Putting to cache key-value %s-%s. Evicted key-value %s-%s", i, i,
                     e == null ? null : e.getKey(), e == null ? null : e.getValue()));
         }
-
-//        System.out.println("Erasing all values...");
-//        int size = cache.getSize();
-//        for (int i = 0; i < size; i++) {
-//            Map.Entry<Integer, String> e = cache.evict();
-//            System.out.println(String.format("Evicted key-value %s-%s",
-//                    e == null ? null : e.getKey(), e == null ? null : e.getValue()));
-//        }
     }
-
 }

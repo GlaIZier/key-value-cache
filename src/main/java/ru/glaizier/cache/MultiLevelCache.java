@@ -88,4 +88,5 @@ public class MultiLevelCache<K, V> implements Cache<K, V> {
     public int getCapacity() {
         return levels.stream().mapToInt(Cache::getCapacity).sum();
     }
+
 }

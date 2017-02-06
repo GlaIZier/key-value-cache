@@ -7,6 +7,7 @@ import java.util.HashMap;
  * get by key
  * get tail
  * get head
+ * remove by key
  * add to tail
  * add to head
  */
@@ -28,7 +29,7 @@ public class LinkedHashSet<E> {
         }
     }
 
-    private HashMap<E, Node<E>> map = new HashMap<>();
+    private final HashMap<E, Node<E>> map = new HashMap<>();
     private Node<E> head;
     private Node<E> tail;
 
@@ -59,7 +60,6 @@ public class LinkedHashSet<E> {
         if (contains(e))
             return false;
         Node<E> node = new Node<>(null, null, e);
-        // first element
         if (head == null) {
             head = node;
             tail = node;
